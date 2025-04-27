@@ -16,21 +16,55 @@
 - DeepSeek API
 - FSM (Finite State Machine) для управления режимами
 - Логирование, обработка ошибок
+- Docker для контейнеризации
 
 ---
 
 ## Быстрый старт
 
+### Вариант 1: Запуск через Docker (рекомендуется)
+
 1. Клонируйте репозиторий:
    ```bash
-   git clone https://github.com/yourusername/yourbotrepo.git
-   cd yourbotrepo
+   git clone https://github.com/privatych/-itoq_deepSeek_bot.git
+   cd -itoq_deepSeek_bot
    ```
-2. Установите зависимости:
+
+2. Создайте файл `.env` по примеру ниже и заполните своими ключами:
+   ```
+   BOT_TOKEN=ваш_telegram_token
+   ADMIN_ID=ваш_telegram_id
+   ```
+
+3. Соберите и запустите Docker-контейнер:
    ```bash
+   docker build -t deepseek-bot .
+   docker run --env-file .env --rm deepseek-bot
+   ```
+
+### Вариант 2: Запуск без Docker
+
+1. Клонируйте репозиторий:
+   ```bash
+   git clone https://github.com/privatych/-itoq_deepSeek_bot.git
+   cd -itoq_deepSeek_bot
+   ```
+
+2. Создайте виртуальное окружение и установите зависимости:
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate  # для Linux/Mac
+   # или
+   .venv\Scripts\activate  # для Windows
    pip install -r requirements.txt
    ```
-3. Создайте файл `.env` по примеру ниже и заполните своими ключами.
+
+3. Создайте файл `.env` по примеру ниже и заполните своими ключами:
+   ```
+   BOT_TOKEN=ваш_telegram_token
+   ADMIN_ID=ваш_telegram_id
+   ```
+
 4. Запустите бота:
    ```bash
    python main.py
@@ -38,24 +72,22 @@
 
 ---
 
-## Быстрый старт с Docker
+## Структура проекта
 
-1. Соберите Docker-образ:
-   ```bash
-   docker build -t chatgpt-itoq-bot .
-   ```
-2. Запустите контейнер:
-   ```bash
-   docker run --env-file .env --rm chatgpt-itoq-bot
-   ```
-
----
-
-## Пример .env
 ```
-BOT_TOKEN=ваш_telegram_token
-OPENAI_API_KEY=sk-...
-ADMIN_ID=123456789
+-itoq_deepSeek_bot/
+├── .dockerignore
+├── .env.example
+├── .gitignore
+├── Dockerfile
+├── README.md
+├── admin_router.py
+├── config.py
+├── keyboards.py
+├── main.py
+├── requirements.txt
+├── services.py
+└── states.py
 ```
 
 ---
