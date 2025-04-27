@@ -5,5 +5,4 @@ class BroadcastState(StatesGroup):
     confirm_message = State()
 
 class UserStates(StatesGroup):
-    waiting_for_prompt = State()
-    waiting_for_image_prompt = State() 
+    waiting_for_prompt = State() 

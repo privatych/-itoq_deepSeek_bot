@@ -150,6 +150,7 @@ async def send_broadcast_confirm_message(callback: CallbackQuery, state: FSMCont
         success_count = 0
         failed_count = 0
 
+        # Отправляем сообщение о начале рассылки
         progress_msg = await callback.message.answer(
             f"🔄 Начало рассылки...\n"
             f"Всего пользователей: {total_users}\n"
@@ -161,22 +162,22 @@ async def send_broadcast_confirm_message(callback: CallbackQuery, state: FSMCont
             try:
                 if photo:
                     await callback.bot.send_photo(
-                        user[0],
-                        photo.file_id,
-                        caption=text_data,
+                        user[0], 
+                        photo.file_id, 
+                        caption=text_data, 
                         parse_mode="HTML"
                     )
                 elif video:
                     await callback.bot.send_video(
-                        user[0],
-                        video.file_id,
-                        caption=text_data,
+                        user[0], 
+                        video.file_id, 
+                        caption=text_data, 
                         parse_mode="HTML"
                     )
                 else:
                     await callback.bot.send_message(
-                        user[0],
-                        text_data,
+                        user[0], 
+                        text_data, 
                         parse_mode="HTML"
                     )
                 success_count += 1
@@ -186,7 +187,7 @@ async def send_broadcast_confirm_message(callback: CallbackQuery, state: FSMCont
                 await set_user_active_status(user[0], False)
                 log(level=ERROR, msg=f"Ошибка при отправке сообщения пользователю {user[0]}: {e}")
 
-            # Обновляем сообщение о прогрессе каждые 10 пользователей или в конце
+            # Обновляем сообщение о прогрессе каждые 10 пользователей
             if i % 10 == 0 or i == total_users:
                 try:
                     await progress_msg.edit_text(
@@ -199,14 +200,13 @@ async def send_broadcast_confirm_message(callback: CallbackQuery, state: FSMCont
                 except Exception as e:
                     log(level=ERROR, msg=f"Ошибка при обновлении сообщения о прогрессе: {e}")
 
-        # Итоговое сообщение
+        # Отправляем финальное сообщение о результатах
         await progress_msg.edit_text(
             f"✅ Рассылка завершена!\n\n"
             f"📊 Результаты:\n"
             f"• Всего пользователей: {total_users}\n"
             f"• Успешно отправлено: {success_count}\n"
-            f"• Не удалось отправить: {failed_count}\n"
-            f"• Проверка: {success_count + failed_count} из {total_users}\n\n"
+            f"• Не удалось отправить: {failed_count}\n\n"
             f"Чтобы вернуться в меню, нажмите кнопку ниже",
             reply_markup=await create_inline_keyboard(
                 ["⬅️Вернуться в меню"],
